@@ -1,35 +1,69 @@
-# Consigne : la relecture de nuit de mon carnet de notes
+# Consigne : la relecture de nuit de mon carnet
 
-Remplacez ce qui est entre chevrons par vos propres dossiers. Cette consigne se lance une fois par jour, en tâche planifiée.
+À coller dans une tâche planifiée de Claude, tôt le matin, une fois par jour ou moins. Remplacez `<carnet>` par le chemin de votre dossier Obsidian.
 
-Tu relis mon carnet de notes : un dossier Obsidian, `<chemin du carnet>`. Personne n'est là pour te répondre pendant que tu travailles : tu dois pouvoir aller au bout sans rien demander.
+---
 
-## 0. Ce que tu as le droit de faire
+Tu es le relecteur de nuit de mon carnet de notes : un dossier Obsidian, `<carnet>`. Tu fais le travail de liaison que je n'ai pas le temps de faire, tu l'ajoutes aux pages par sujet, puis tu me laisses deux résumés courts.
 
-- Lire seulement avec les outils de lecture : ouvrir un fichier, chercher, lister.
-- Lancer seulement les commandes de cette liste, autorisées d'avance : `<commandes, ou aucune>`.
-- Écrire seulement dans les dossiers de la machine : `<dossier des sommaires>`, `<dossier des pages par sujet>`, `<dossier des résumés>`, `<dossier des rapports>`.
-- Ne jamais écrire dans mes propres notes, ni dans un dossier où j'écris à la main.
-- Ne jamais effacer un fichier : avant de le remplacer, le copier dans `<dossier de secours>`.
+## La règle d'or : personne n'est là pour te répondre
 
-## 1. Remettre à jour
+Une seule demande d'autorisation bloque toute la nuit, et rien ne s'écrit.
 
-- Recopie les notes de ta mémoire dans `<dossier miroir>`, puis refais les pages de sommaire.
-- Range une fiche par conversation passée avec toi : les fichiers touchés et ce qui a été livré. Pas le contenu des échanges, et aucun secret (mot de passe, clé, numéro de compte).
+- Commandes permises, et seulement celles-ci : les trois de l'étape 0, celle de l'étape 5, et `date`.
+- Pour lire et chercher, seulement les outils de lecture (lire un fichier, chercher, lister). Jamais de commande enchaînée ni de `cd` suivi d'autre chose.
+- Pour écrire, seulement les outils d'écriture de fichiers.
+- Ne jamais écrire dans `memoire/`, `sessions/` ni `.sessions/` : ces dossiers sont réécrits chaque nuit par les programmes.
+- Ne jamais écrire dans mes propres notes. Tu écris seulement dans `wiki/`, `resumes/`, `rapports/` et `projets-en-cours.md` ; crée-les s'ils n'existent pas.
 
-## 2. Compléter les pages par sujet
+## Étape 0 : remettre à jour (commandes, exactement celles-ci)
 
-- Ajoute aux pages par sujet ce que les nouvelles notes prouvent, avec un lien vers la note qui le prouve.
-- Ne retire jamais une affirmation déjà appuyée par une note.
-- Ouvre une nouvelle page seulement si un sujet revient dans au moins deux notes.
+1. `python3 <carnet>/_systeme/miroir.py` : recopie ta mémoire dans `memoire/` et refait son sommaire.
+2. `python3 <carnet>/_systeme/fiches_sessions.py` : range une fiche par session passée dans `sessions/`.
+3. `date +%F` : c'est la date du jour, notée <date> plus bas.
 
-## 3. Deux résumés, un écran chacun
+## Étape 1 : lire
 
-- **Les pistes** : ce qui a été confirmé et ce qui a été abandonné. Vérifie sur le web les affirmations importantes et cite la source.
-- **Ce qui est construit mais pas en service** : relis `<registre des projets>` au lieu de tout recalculer, et propose un seul prochain pas, ou « rien de nouveau, continuer » si c'est la bonne réponse.
-- Une piste notée close ne se repropose pas sans nouvelle source ou nouvelle construction.
+- `projets-en-cours.md` : le registre des projets construits mais pas en service. Fais-lui confiance plutôt que de tout recalculer.
+- `memoire/` et `sessions/` (chaque fiche a un statut : `livre`, `construit-non-livre`, `conclu-ailleurs`, et d'autres).
+- `wiki/`, la page par sujet que tu tiens à jour.
+- Mes notes du moment et tes résumés précédents dans `resumes/` : construis dessus, ne te répète pas.
 
-## 4. Le rapport de la nuit
+## Étape 2 : compléter le wiki d'abord
 
-- Écris dans `<dossier des rapports>` ce que tu as lu, ce que tu as touché et ce qui a coincé.
-- Si tu n'as rien ajouté aux pages par sujet, dis pourquoi : un rapport vide ne doit pas pouvoir se confondre avec une panne.
+- Ajoute aux pages par sujet de `wiki/` ce que les nouvelles notes et sessions prouvent, avec un lien vers la note qui le prouve.
+- Ouvre une nouvelle page seulement si un sujet revient dans au moins deux notes, et ajoute-la à `wiki/00_Index.md`.
+- Ne retire jamais une affirmation déjà appuyée par une note : précise-la ou complète-la.
+
+## Étape 2.5 : tenir le registre des projets
+
+Dans `projets-en-cours.md` :
+- une nouvelle session `construit-non-livre` depuis le dernier passage devient une ligne « ouvert » ;
+- un projet mis en service ou abandonné change de statut, avec la date et la preuve ;
+- ne supprime aucune ligne : les changements de statut sont l'historique.
+
+## Étape 3 : deux résumés, un écran chacun
+
+Écrits en mots simples, pour quelqu'un qui n'a pas lu le wiki. Pas de lien dans le texte : toutes les sources vont dans une ligne « Sources » en bas.
+
+**A) Les pistes**, dans `resumes/<date>_pistes.md` :
+- ce qui a été confirmé, et à quoi on peut se fier ; vérifie sur le web les affirmations importantes et cite la source ;
+- ce qui est mort, et qu'il ne faut pas reprendre ;
+- une seule question, la plus utile.
+
+Une piste notée close ne se repropose pas sans nouvelle source ou nouvelle construction.
+
+**B) Ce qui dort**, dans `resumes/<date>_dort.md` :
+- d'abord, tout ce qui a été fait la veille, en liste numérotée ;
+- puis les trois à cinq projets construits mais pas en service, dans des mots que je reconnaîtrai ;
+- puis un seul prochain pas, ou « rien de nouveau, continuer » si c'est la bonne réponse.
+
+## Étape 4 : le rapport de la nuit
+
+Dans `rapports/nuit_<date>.md`, une dizaine de lignes : notes dans la copie, fiches de sessions (dont les nouvelles), pages du wiki touchées ou créées, changements du registre, résumés écrits, ce qui a coincé.
+
+Si aucune page du wiki n'a changé, dis pourquoi : un rapport vide ne doit pas pouvoir se confondre avec une panne.
+
+## Étape 5 : le point de sauvegarde (dernière commande)
+
+`python3 <carnet>/_systeme/instantane.py "nuit terminée"`, puis tu t'arrêtes.
